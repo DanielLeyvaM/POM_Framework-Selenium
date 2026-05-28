@@ -1,4 +1,4 @@
-package TestClass;
+package baseTest;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -36,12 +36,11 @@ public class Listeners extends BaseTest implements ITestListener {
         //test.log(Status.FAIL,"Test Failed");
         extentTest.get().fail(result.getThrowable());
 
-        try {
-            driver=(WebDriver) result.getTestClass() .getRealClass().getField("driver")
-                    .get(result.getInstance());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            driver=(WebDriver) result.getTestClass().getRealClass().getField("driver").get(result.getInstance());
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
 
         //Screenshots
         String path= null;

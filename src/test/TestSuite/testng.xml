@@ -2,13 +2,15 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="BasicSuite">
 
+    <parameter name="browser" value="chrome"/>
+
     <listeners>
-        <listener class-name="TestClass.Listeners"/>
+        <listener class-name="baseTest.Listeners"/>
     </listeners>
-    
-    <test name="TestE2E">
+
+    <test name="TestE2E" >
         <classes>
-            <class name="TestCases.TestE2E"/>
+            <class name="testCases.TestE2E"/>
         </classes>
     </test>
     
