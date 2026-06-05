@@ -6,13 +6,11 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import pageClasses.CartPage;
-import pageClasses.LandingPage;
+import pageClasses.MainPage;
 import pageClasses.LoginPage;
 import pageClasses.ProductsPage;
 
-import java.io.IOException;
 import java.util.HashMap;
-
 
 public class TestE2E extends BaseTest {
 
@@ -20,73 +18,45 @@ public class TestE2E extends BaseTest {
     @DataProvider
     public Object[][] getDataObject(){
         return new Object[][] {
-                {"test-email@gmail.com", "password", "Apparel & Shoes", "Blue Jeans"},
-                //{"test-email@gmail.com", "password", "Apparel & Shoes", "No product"},
+                //{"test-email@gmail.com", "password", "Apparel & Shoes", "Blue Jeans"},
+                {"test-email@gmail.com", "password", "Apparel & Shoes", "No product"},
                 {"test-email@gmail.com", "password", "Jewelry", "Black & White Diamond Heart"}
         };
     }
 
-//    @Test(dataProvider = "getDataObject")
-//    public void addSingleProductToCart(String email, String password, String section, String product) {
-
-//        driver.get("https://demowebshop.tricentis.com/");
-
-//        //------------------ Landing Page -------------------
-//        LandingPage mainPage= new LandingPage(driver);
-//        mainPage.clickLogin();
-//
-//        //----------------- Login Page ----------------------
-//        LoginPage login= new LoginPage(driver);
-//        login.doLogin(email, password);
-//
-//        //--------------------- Navigate to section ------------------------
-//        //mainPage.selectMenuOption("Apparel & Shoes");
-//        mainPage.selectMenuOption(section);
-//
-//        //--------------------- Add item to cart ----------------------------
-//        ProductsPage productP= new ProductsPage(driver);
-//        //productP.selectProductToBuy("Blue Jeans");
-//        productP.selectProductToBuy(product);
-//
-//        productP.clickAddToCartButton();
-//        mainPage.clickCart();
-//
-//        //----------------------- Cart section -----------------------------
-//        CartPage cart= new CartPage(driver);
-//        //cart.searchElementInCart("Blue Jeans");
-//        cart.searchElementInCart(product);
-//    }
-
-
     @Test(dataProvider = "getDataObject")
     public void addSingleProductToCart(String email, String password, String section, String product) {
-        //------------------------------- REFACTORING --------------------------
-        //LoginData loginData= new LoginData(email,password);
-        //ProductData productData= new ProductData(section,product);
 
-        LandingPage landingObj= new LandingPage(driver);
-        landingObj.openUrl();
+        //------------------------ Main Page -----------------------
+        MainPage mainPage = new MainPage(driver);
+        mainPage.openUrl()
+                .clickLogin();
 
-        LoginPage loginObj= landingObj.clickLogin();
+        //----------------------- Login Page --------------------------
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.enterEmail(email)
+                 .enterPassword(password)
+                 .clickLogin();
 
-        loginObj.enterEmail(email)
-                .enterPassword(password)
-                .clickRememberMeCheckbox();
+        //--------------------- Navigate to section ------------------------
+        mainPage.selectMenuOption(section);
 
-        ProductsPage productsObj= loginObj.clickLogin();
-
-        landingObj.selectMenuOption(section);
-
-        productsObj.selectProductToBuy(product)
+        //--------------------- Add item to cart ----------------------------
+        ProductsPage productsPage = new ProductsPage(driver);
+        productsPage.selectProductToBuy(product)
                     .clickAddToCartButton();
-        Assert.assertEquals(productsObj.getAddedToCartMessage(), "The product has been added to your shopping cart");
+        Assert.assertEquals(productsPage.getAddedToCartMessage(), "The product has been added to your shopping cart");
 
-        CartPage cartObj= landingObj.clickCart();
-        Assert.assertEquals(cartObj.getProductNameInCart(product),product);
+        mainPage.clickCart();
+
+        //----------------------- Cart section -----------------------------
+        CartPage cartPage = new CartPage(driver);
+        Assert.assertEquals(cartPage.getProductNameInCart(product), product);
 
     }
 
 
+    //-------------------------------------------------------------------------
 
 
     //------------------------- Data Provider Map -----------------------------
@@ -110,35 +80,33 @@ public class TestE2E extends BaseTest {
         };
     }
 
-
     //@Test(dataProvider = "getDataMap")
-    public void addSingleProductToCart(HashMap<String,String> map) throws IOException {
+    public void addSingleProductToCart(HashMap<String,String> map) {
+        //------------------ Main Page -------------------
+        MainPage mainPage = new MainPage(driver);
+        mainPage.openUrl()
+                .clickLogin();
 
-        //------------------ Landing Page -------------------
-//        LandingPage mainPage= new LandingPage(driver);
-//        mainPage.clickLogin();
-//
-//        //----------------- Login Page ----------------------
-//        LoginPage login= new LoginPage(driver);
-//        login.doLogin(map.get("email"),map.get("password") );
-//
-//        //--------------------- Navigate to section ------------------------
-//        //mainPage.selectMenuOption("Apparel & Shoes");
-//        mainPage.selectMenuOption(map.get("section"));
-//
-//        //--------------------- Add item to cart ----------------------------
-//        ProductsPage productP= new ProductsPage(driver);
-//        //productP.selectProductToBuy("Blue Jeans");
-//        productP.selectProductToBuy(map.get("product"));
-//
-//        productP.clickAddToCartButton();
-//        mainPage.clickCart();
-//
-//        //----------------------- Cart section -----------------------------
-//        CartPage cart= new CartPage(driver);
-//        //cart.searchElementInCart("Blue Jeans");
-//        cart.searchElementInCart(map.get("product"));
+        //----------------- Login Page ----------------------
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.enterEmail(map.get("email"))
+                .enterPassword(map.get("password"))
+                .clickLogin();
 
+        //--------------------- Navigate to section ------------------------
+        mainPage.selectMenuOption(map.get("section"));
+
+        //--------------------- Add item to cart ----------------------------
+        ProductsPage productsPage = new ProductsPage(driver);
+        productsPage.selectProductToBuy(map.get("product"))
+                .clickAddToCartButton();
+        Assert.assertEquals(productsPage.getAddedToCartMessage(), "The product has been added to your shopping cart");
+
+        mainPage.clickCart();
+
+        //----------------------- Cart section -----------------------------
+        CartPage cartPage = new CartPage(driver);
+        Assert.assertEquals(cartPage.getProductNameInCart(map.get("product")), map.get("product"));
     }
 
 }

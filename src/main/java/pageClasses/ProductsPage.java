@@ -10,24 +10,27 @@ import java.util.List;
 
 public class ProductsPage extends BasePage {
 
-    //--------------------------- REFACTORING ---------------------------------
+    //--------------------------- Attributes ---------------------------------
     private final By products= By.xpath("//div[@class='item-box']//h2//a");
     private final By addToCartButton= By.className("add-to-cart-button");
     private final By addedToCartMessage= By.xpath("//div[@id='bar-notification']/p");
 
+
+    //------------------------ Constructor --------------------------------
     public ProductsPage(WebDriver driver){
         super(driver);
     }
 
+    //---------------------- Methods ----------------------
     public ProductsPage selectProductToBuy(String option){
-        explicitWaitPresenceOf(products);
+        longWait.until(ExpectedConditions.presenceOfElementLocated(products));
         List<WebElement> productList= driver.findElements(products);
 
         getElementFromList(productList, option).click();
         return this;
     }
 
-    public String getAddedToCartMessage(){
+    public String getAddedToCartMessage(){                  //Assertion helper
         longWait.until(ExpectedConditions.presenceOfElementLocated(addedToCartMessage));
         return driver.findElement(addedToCartMessage).getText();
     }

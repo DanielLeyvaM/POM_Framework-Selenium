@@ -5,7 +5,7 @@
     <parameter name="browser" value="chrome"/>
 
     <listeners>
-        <listener class-name="baseTest.Listeners"/>
+        <listener class-name="Utilities.Listeners"/>
     </listeners>
 
     <test name="TestE2E" >
