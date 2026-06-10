@@ -15,6 +15,7 @@ public class ProductsPage extends BasePage {
     private final By addToCartButton= By.className("add-to-cart-button");
     private final By addedToCartMessage= By.xpath("//div[@id='bar-notification']/p");
 
+    private final By productTitle= By.xpath("//h2[@class='product-title']/a");
 
     //------------------------ Constructor --------------------------------
     public ProductsPage(WebDriver driver){
@@ -40,4 +41,24 @@ public class ProductsPage extends BasePage {
         return this;
     }
 
+    public ProductsPage clickMultipleAddToCart(String product1, String product2){
+        longWait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(productTitle));
+        List<WebElement> titleList= driver.findElements(productTitle);
+
+        for(WebElement element: titleList){
+            if(element.getText().equalsIgnoreCase(product1)){
+                driver.findElement(By.xpath("//a[contains(text(), '" +product1+ "')]/../..//input")).click();
+                longWait.until(ExpectedConditions.invisibilityOfElementLocated(addedToCartMessage));
+            }
+        }
+
+        for(WebElement element: titleList){
+            if(element.getText().equalsIgnoreCase(product2)){
+                driver.findElement(By.xpath("//a[contains(text(), '" +product2+ "')]/../..//input")).click();
+                longWait.until(ExpectedConditions.invisibilityOfElementLocated(addedToCartMessage));
+            }
+        }
+
+        return this;
+    }
 }

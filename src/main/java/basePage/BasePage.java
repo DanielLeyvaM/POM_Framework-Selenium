@@ -20,8 +20,8 @@ public class BasePage {
     public BasePage(WebDriver driver){
         this.driver=driver;
 
-        shortWait= new WebDriverWait(driver, Duration.ofSeconds(10));
-        longWait= new WebDriverWait(driver, Duration.ofSeconds(20));
+        shortWait= new WebDriverWait(driver, Duration.ofSeconds(5));
+        longWait= new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     //----------------------- METHODS ------------------------------

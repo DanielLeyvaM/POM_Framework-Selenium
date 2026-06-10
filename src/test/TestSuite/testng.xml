@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="BasicSuite">
+<suite name="BasicSuite" parallel="classes">
 
     <parameter name="browser" value="chrome"/>
 
@@ -10,7 +10,9 @@
 
     <test name="TestE2E" >
         <classes>
-            <class name="testCases.TestE2E"/>
+<!--            <class name="testCases.TestE2E"/>-->
+            <class name="testCases.LoginTest"/>
+            <class name="testCases.AddProductsTest"/>
         </classes>
     </test>
     

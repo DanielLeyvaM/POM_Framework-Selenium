@@ -13,8 +13,9 @@ public class MainPage extends BasePage {
     //---------------------- Attributes ----------------------
     private final By loginLink = By.xpath("//a[@href='/login']");
     private final By cartLink = By.className("cart-label");
-    private final By headerMenu = By.xpath("//ul[@class='top-menu']/li");
+    private final By registerLink = By.xpath("//div[@class='header-links']//a[@class='account']");
 
+    private final By headerMenu = By.xpath("//ul[@class='top-menu']/li");
 
     //---------------------- Constructor ----------------------
     public MainPage(WebDriver driver){
@@ -42,6 +43,11 @@ public class MainPage extends BasePage {
 
     public void clickCart(){
         driver.findElement(cartLink).click();
+    }
+
+    public String validateLoginText(){
+        longWait.until(ExpectedConditions.textToBe(registerLink,"test-email@gmail.com"));
+        return driver.findElement(registerLink).getText();
     }
 
 }

@@ -3,15 +3,19 @@ package pageClasses;
 import org.openqa.selenium.By;
 import basePage.BasePage;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class LoginPage extends BasePage {
 
     //---------------------- Attributes ----------------------
+    //-- Login Section
+    private final By loginButton = By.xpath("//input[@value='Log in']");
     private final By emailInput = By.id("Email");
     private final By passwordInput = By.id("Password");
     private final By rememberCheckbox = By.id("RememberMe");
-    private final By loginButton = By.xpath("//input[@value='Log in']");
 
+    //-- Error messages
+    private final By errorMessage= By.xpath("//div[@class='validation-summary-errors']//li");
 
     //---------------------- Constructor ----------------------
     public LoginPage(WebDriver driver){
@@ -45,4 +49,8 @@ public class LoginPage extends BasePage {
                 .clickLogin();
     }
 
+    public String validateSpecificErrorMessage(){
+        longWait.until(ExpectedConditions.presenceOfElementLocated(errorMessage));
+        return driver.findElement(errorMessage).getText();
+    }
 }
